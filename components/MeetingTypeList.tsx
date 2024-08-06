@@ -51,6 +51,13 @@ const MeetingTypeList = () => {
 
   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`;
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    // Remove the specific string from the input value
+    const cleanedValue = newValue.replace(/fan-meet\.vercel\.app/g, '');
+    setValues({ ...values, link: cleanedValue });
+  };
+
   return (
     <section className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4'>
       <HomeCard img='/icons/add-meeting.svg' title='New Meeting' description='Start an instant meeting' className='bg-orange-1' handleClick={() => setMeetingState('isInstantMeeting')} />
@@ -74,7 +81,7 @@ const MeetingTypeList = () => {
       <MeetingModal isOpen={meetingState === 'isInstantMeeting'} onClose={() => setMeetingState(undefined)} title='Start a New Meeting' className='text-center' buttonText='Start Meeting' handleClick={createMeeting} />
 
       <MeetingModal isOpen={meetingState === 'isJoiningMeeting'} onClose={() => setMeetingState(undefined)} title='Paste The Link Here' className='text-center' buttonText='Start Meeting' handleClick={() => router.push(values.link)}>
-        <Input placeholder='Invite Link' className='border-none dark:bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0' onChange={(e) => setValues({ ...values, link: e.target.value })} />
+        <Input placeholder='Invite Link' className='border-none dark:bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0' onChange={handleChange} />
       </MeetingModal>
     </section>
   )
